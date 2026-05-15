@@ -443,11 +443,11 @@ def authenticate_user(username, password):
     return username == ADMIN_USERNAME and password == ADMIN_PASSWORD
 
 def create_access_token(data, expires_minutes=TOKEN_EXPIRE_MINUTES):
-    from jose import jwt as jose_jwt
+    import jwt
     to_encode = data.copy()
     expire = datetime.now(timezone.utc) + timedelta(minutes=expires_minutes)
     to_encode.update({"exp": expire, "iat": datetime.now(timezone.utc)})
-    return jose_jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
 
 
 # ─────────────────────────────────────────────
