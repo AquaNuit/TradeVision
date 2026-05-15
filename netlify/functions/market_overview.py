@@ -18,11 +18,23 @@ def handler(event, context):
 
     def _fetch_sector(name, sym):
         try:
-            import yfinance as yf
-            t = yf.Ticker(sym)
-            h = t.history(period="2d", interval="1d")
-            if len(h) >= 2:
-                ch = round((float(h["Close"].iloc[-1]) - float(h["Close"].iloc[-2])) / float(h["Close"].iloc[-2]) * 100, 2)
+            import urllib.request, json
+            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?interval=1d&range=5d"
+            req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0'})
+            with urllib.request.urlopen(req, timeout=5) as response:
+                data = json.loads(response.read().decode('utf-8'))
+            
+            result = data.get('chart', {}).get('result', [])
+            if not result:
+                return {"name": name, "change": 0}
+            
+            closes = result[0].get('indicators', {}).get('quote', [{}])[0].get('close', [])
+            closes = [c for c in closes if c is not None]
+            
+            if len(closes) >= 2:
+                current = float(closes[-1])
+                prev = float(closes[-2])
+                ch = round((current - prev) / prev * 100, 2)
             else:
                 ch = 0
             return {"name": name, "change": ch}
