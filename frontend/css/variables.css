@@ -1,0 +1,136 @@
+/* ===================================================
+   TradeVision Pro — Design Tokens & CSS Variables
+   =================================================== */
+
+:root {
+    /* ── Color Palette ── */
+    /* Primary */
+    --primary-50: #EDE7F6;
+    --primary-100: #D1C4E9;
+    --primary-200: #B39DDB;
+    --primary-300: #9575CD;
+    --primary-400: #7E57C2;
+    --primary-500: #6C63FF;
+    --primary-600: #5A52D5;
+    --primary-700: #4A42B0;
+    --primary-800: #3A338A;
+    --primary-900: #2A2465;
+    
+    /* Accent / Success Green */
+    --accent-400: #66FFA6;
+    --accent-500: #00E676;
+    --accent-600: #00C853;
+    --accent-700: #00A344;
+    
+    /* Danger / Red */
+    --danger-400: #FF6B6B;
+    --danger-500: #FF3D3D;
+    --danger-600: #E53535;
+    --danger-700: #C62828;
+    
+    /* Warning / Orange-Amber */
+    --warning-400: #FFB74D;
+    --warning-500: #FFA726;
+    --warning-600: #FB8C00;
+    --warning-700: #E65100;
+    
+    /* Info / Cyan */
+    --info-400: #4DD0E1;
+    --info-500: #00BCD4;
+    --info-600: #0097A7;
+    
+    /* ── Dark Theme (Default) ── */
+    --bg-primary: #0A0B0E;
+    --bg-secondary: #12131A;
+    --bg-tertiary: #1A1B26;
+    --bg-elevated: #1E1F2E;
+    --bg-hover: #252638;
+    --bg-active: #2D2E45;
+    --bg-card: #14151F;
+    --bg-card-hover: #1A1B2A;
+    --bg-modal: rgba(0, 0, 0, 0.75);
+    --bg-glass: rgba(20, 21, 31, 0.85);
+    
+    /* Surface */
+    --surface-1: #14151F;
+    --surface-2: #1A1B26;
+    --surface-3: #22233A;
+    --surface-4: #2A2B45;
+    
+    /* Borders */
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --border-default: rgba(255, 255, 255, 0.10);
+    --border-strong: rgba(255, 255, 255, 0.16);
+    --border-accent: rgba(108, 99, 255, 0.40);
+    
+    /* Text */
+    --text-primary: #F0F0F5;
+    --text-secondary: #A0A3BD;
+    --text-tertiary: #6B6E8A;
+    --text-disabled: #4A4D6A;
+    --text-inverse: #0A0B0E;
+    
+    /* Trading Colors */
+    --bull: #00E676;
+    --bull-bg: rgba(0, 230, 118, 0.10);
+    --bull-bg-strong: rgba(0, 230, 118, 0.20);
+    --bear: #FF3D3D;
+    --bear-bg: rgba(255, 61, 61, 0.10);
+    --bear-bg-strong: rgba(255, 61, 61, 0.20);
+    --neutral: #FFA726;
+    --neutral-bg: rgba(255, 167, 38, 0.10);
+    
+    /* ── Shadows ── */
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+    --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.6);
+    --shadow-glow-primary: 0 0 20px rgba(108, 99, 255, 0.3);
+    --shadow-glow-accent: 0 0 20px rgba(0, 230, 118, 0.3);
+    --shadow-glow-danger: 0 0 20px rgba(255, 61, 61, 0.3);
+    
+    /* ── Typography ── */
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    
+    --text-xs: 0.6875rem;    /* 11px */
+    --text-sm: 0.75rem;      /* 12px */
+    --text-base: 0.8125rem;  /* 13px */
+    --text-md: 0.875rem;     /* 14px */
+    --text-lg: 1rem;         /* 16px */
+    --text-xl: 1.125rem;     /* 18px */
+    --text-2xl: 1.375rem;    /* 22px */
+    --text-3xl: 1.75rem;     /* 28px */
+    --text-4xl: 2.25rem;     /* 36px */
+    
+    /* ── Spacing ── */
+    --space-1: 0.25rem;   /* 4px */
+    --space-2: 0.5rem;    /* 8px */
+    --space-3: 0.75rem;   /* 12px */
+    --space-4: 1rem;      /* 16px */
+    --space-5: 1.25rem;   /* 20px */
+    --space-6: 1.5rem;    /* 24px */
+    --space-8: 2rem;      /* 32px */
+    --space-10: 2.5rem;   /* 40px */
+    --space-12: 3rem;     /* 48px */
+    
+    /* ── Border Radius ── */
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-xl: 16px;
+    --radius-2xl: 20px;
+    --radius-full: 999px;
+    
+    /* ── Transitions ── */
+    --transition-fast: 150ms ease;
+    --transition-base: 250ms ease;
+    --transition-slow: 400ms ease;
+    --transition-spring: 350ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    
+    /* ── Layout ── */
+    --sidebar-width: 260px;
+    --sidebar-collapsed-width: 72px;
+    --topbar-height: 56px;
+    --ticker-height: 36px;
+}

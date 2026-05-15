@@ -1,0 +1,96 @@
+# TradeVision Pro — Netlify Configuration
+# Deploy: connect this repo to Netlify, it auto-detects everything.
+
+[build]
+  publish = "frontend"
+  functions = "netlify/functions"
+
+[build.environment]
+  PYTHON_VERSION = "3.12"
+
+# Netlify Functions configuration
+[functions]
+  # Include shared.py as a support module (not a function itself)
+  included_files = ["netlify/functions/shared.py"]
+
+# Redirect all /api/* calls to the serverless functions
+[[redirects]]
+  from = "/api/auth/login"
+  to = "/.netlify/functions/auth_login"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth/register"
+  to = "/.netlify/functions/auth_register"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth/me"
+  to = "/.netlify/functions/auth_me"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth/token-info"
+  to = "/.netlify/functions/auth_token_info"
+  status = 200
+
+[[redirects]]
+  from = "/api/auth/refresh"
+  to = "/.netlify/functions/auth_refresh"
+  status = 200
+
+[[redirects]]
+  from = "/api/market/overview"
+  to = "/.netlify/functions/market_overview"
+  status = 200
+
+[[redirects]]
+  from = "/api/market/movers"
+  to = "/.netlify/functions/market_movers"
+  status = 200
+
+[[redirects]]
+  from = "/api/market/stock/*"
+  to = "/.netlify/functions/market_stock?symbol=:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/market/candles/*"
+  to = "/.netlify/functions/market_candles?symbol=:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/scanner/scan"
+  to = "/.netlify/functions/scanner_scan"
+  status = 200
+
+[[redirects]]
+  from = "/api/signals/"
+  to = "/.netlify/functions/signals_list"
+  status = 200
+
+[[redirects]]
+  from = "/api/signals/*"
+  to = "/.netlify/functions/signals_detail?symbol=:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/backtest/run"
+  to = "/.netlify/functions/backtest_run"
+  status = 200
+
+[[redirects]]
+  from = "/api/health"
+  to = "/.netlify/functions/health"
+  status = 200
+
+[[redirects]]
+  from = "/api/config"
+  to = "/.netlify/functions/config"
+  status = 200
+
+# SPA fallback — all other routes serve index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

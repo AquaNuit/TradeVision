@@ -1,0 +1,34 @@
+version: '3.9'
+
+services:
+  tradevision:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - ALPHA_VANTAGE_KEY=${ALPHA_VANTAGE_KEY:-demo}
+      - DATABASE_URL=postgresql://tv:tv_pass@postgres:5432/tradevision
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: tradevision
+      POSTGRES_USER: tv
+      POSTGRES_PASSWORD: tv_pass
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+volumes:
+  pgdata:

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TradeVision Pro — AI-powered stock trading assistant with real-time scanning, smart signals, and TradingView integration.">
+    <title>TradeVision Pro — AI Trading Assistant</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    
+    <!-- TradingView Widget -->
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+    
+    <!-- Lightweight Charts -->
+    <script src="https://unpkg.com/lightweight-charts@4.1.0/dist/lightweight-charts.standalone.production.js"></script>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+    <!-- Splash Loader -->
+    <div id="splash-loader" class="splash-loader">
+        <div class="splash-content">
+            <div class="splash-logo">
+                <div class="splash-icon-ring">
+                    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 36L14 24L22 30L30 14L42 22" stroke="url(#splash-grad)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M30 14L42 22" stroke="url(#splash-grad2)" stroke-width="3" stroke-linecap="round"/>
+                        <circle cx="42" cy="22" r="3" fill="#00E676"/>
+                        <defs>
+                            <linearGradient id="splash-grad" x1="6" y1="36" x2="42" y2="14"><stop stop-color="#6C63FF"/><stop offset="1" stop-color="#00E676"/></linearGradient>
+                            <linearGradient id="splash-grad2" x1="30" y1="14" x2="42" y2="22"><stop stop-color="#00E676"/><stop offset="1" stop-color="#00E676"/></linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+            </div>
+            <h1 class="splash-title">TradeVision Pro</h1>
+            <p class="splash-subtitle">AI Trading Intelligence</p>
+            <div class="splash-progress">
+                <div class="splash-progress-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Container -->
+    <div id="app" class="app-container" style="display:none;">
+        
+        <!-- Sidebar Navigation -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo-container">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 32 32" fill="none">
+                            <path d="M4 24L10 16L16 20L22 10L28 15" stroke="url(#logo-g)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <circle cx="28" cy="15" r="2" fill="#00E676"/>
+                            <defs><linearGradient id="logo-g" x1="4" y1="24" x2="28" y2="10"><stop stop-color="#6C63FF"/><stop offset="1" stop-color="#00E676"/></linearGradient></defs>
+                        </svg>
+                    </div>
+                    <div class="logo-text">
+                        <span class="logo-name">TradeVision</span>
+                        <span class="logo-badge">PRO</span>
+                    </div>
+                </div>
+                <button id="sidebar-toggle" class="sidebar-toggle" aria-label="Toggle sidebar">
+                    <i data-lucide="panel-left-close" class="icon-sm"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <div class="nav-section">
+                    <span class="nav-section-title">MAIN</span>
+                    <a href="#" class="nav-item active" data-page="overview" id="nav-overview">
+                        <i data-lucide="layout-dashboard" class="nav-icon"></i>
+                        <span class="nav-label">Market Overview</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="scanner" id="nav-scanner">
+                        <i data-lucide="scan-search" class="nav-icon"></i>
+                        <span class="nav-label">Live Scanner</span>
+                        <span class="nav-badge pulse">LIVE</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="signals" id="nav-signals">
+                        <i data-lucide="zap" class="nav-icon"></i>
+                        <span class="nav-label">Trade Signals</span>
+                        <span class="nav-count">5</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="watchlist" id="nav-watchlist">
+                        <i data-lucide="star" class="nav-icon"></i>
+                        <span class="nav-label">Watchlist</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <span class="nav-section-title">ANALYSIS</span>
+                    <a href="#" class="nav-item" data-page="analysis" id="nav-analysis">
+                        <i data-lucide="brain" class="nav-icon"></i>
+                        <span class="nav-label">AI Analysis</span>
+                        <span class="nav-badge-new">AI</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="backtest" id="nav-backtest">
+                        <i data-lucide="flask-conical" class="nav-icon"></i>
+                        <span class="nav-label">Backtesting</span>
+                    </a>
+                </div>
+                
+                <div class="nav-section">
+                    <span class="nav-section-title">SYSTEM</span>
+                    <a href="#" class="nav-item" data-page="alerts" id="nav-alerts">
+                        <i data-lucide="bell-ring" class="nav-icon"></i>
+                        <span class="nav-label">Alerts</span>
+                        <span class="nav-count warn">3</span>
+                    </a>
+                    <a href="#" class="nav-item" data-page="settings" id="nav-settings">
+                        <i data-lucide="settings" class="nav-icon"></i>
+                        <span class="nav-label">Settings</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="market-status">
+                    <div class="status-dot open"></div>
+                    <span class="status-text">Markets Open</span>
+                </div>
+                <div class="sidebar-user" style="cursor:pointer;" onclick="Auth.logout()" title="Click to logout">
+                    <div class="user-avatar">AT</div>
+                    <div class="user-info">
+                        <span class="user-name">Aarav Trivedi</span>
+                        <span class="user-plan">Pro Plan</span>
+                    </div>
+                    <i data-lucide="log-out" style="width:14px;height:14px;color:var(--text-tertiary);margin-left:auto;"></i>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main id="main-content" class="main-content">
+            
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="Menu">
+                        <i data-lucide="menu" class="icon-sm"></i>
+                    </button>
+                    <div class="breadcrumb">
+                        <span id="page-title" class="page-title">Market Overview</span>
+                    </div>
+                </div>
+                <div class="topbar-center">
+                    <div class="global-search" id="global-search">
+                        <i data-lucide="search" class="search-icon"></i>
+                        <input type="text" id="search-input" placeholder="Search stocks, crypto, forex... (⌘K)" autocomplete="off">
+                        <kbd class="search-kbd">⌘K</kbd>
+                        <div id="search-results" class="search-results"></div>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <div class="market-ticker" id="market-ticker">
+                        <div class="ticker-item">
+                            <span class="ticker-symbol">NIFTY</span>
+                            <span class="ticker-price up">22,456.80</span>
+                            <span class="ticker-change up">+1.24%</span>
+                        </div>
+                        <div class="ticker-item">
+                            <span class="ticker-symbol">SENSEX</span>
+                            <span class="ticker-price up">73,890.15</span>
+                            <span class="ticker-change up">+0.98%</span>
+                        </div>
+                        <div class="ticker-item">
+                            <span class="ticker-symbol">S&P 500</span>
+                            <span class="ticker-price down">5,234.18</span>
+                            <span class="ticker-change down">-0.32%</span>
+                        </div>
+                        <div class="ticker-item">
+                            <span class="ticker-symbol">BTC</span>
+                            <span class="ticker-price up">$67,432</span>
+                            <span class="ticker-change up">+2.47%</span>
+                        </div>
+                    </div>
+                    <button class="topbar-btn" id="notification-btn" aria-label="Notifications">
+                        <i data-lucide="bell" class="icon-sm"></i>
+                        <span class="notification-dot"></span>
+                    </button>
+                    <button class="topbar-btn" id="theme-toggle" aria-label="Toggle theme">
+                        <i data-lucide="moon" class="icon-sm"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- Page Content Container -->
+            <div id="page-container" class="page-container">
+                <!-- Pages will be rendered here by the router -->
+            </div>
+        </main>
+    </div>
+    
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Command Palette / Search Modal -->
+    <div id="command-palette" class="command-palette" style="display:none;">
+        <div class="command-palette-overlay"></div>
+        <div class="command-palette-content">
+            <div class="command-search">
+                <i data-lucide="search" class="command-search-icon"></i>
+                <input type="text" id="command-input" placeholder="Type a command or search..." autocomplete="off">
+                <kbd>ESC</kbd>
+            </div>
+            <div id="command-results" class="command-results"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/scanner-engine.js"></script>
+    <script src="js/ai-scoring.js"></script>
+    <script src="js/components/charts.js"></script>
+    <script src="js/components/widgets.js"></script>
+    <script src="js/pages/overview.js"></script>
+    <script src="js/pages/scanner.js"></script>
+    <script src="js/pages/signals.js"></script>
+    <script src="js/pages/watchlist.js"></script>
+    <script src="js/pages/analysis.js"></script>
+    <script src="js/pages/backtest.js"></script>
+    <script src="js/pages/alerts.js"></script>
+    <script src="js/pages/settings.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/router.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

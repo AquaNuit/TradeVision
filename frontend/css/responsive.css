@@ -1,0 +1,29 @@
+/* Responsive Breakpoints */
+@media (max-width: 1400px) {
+    .overview-grid { grid-template-columns: repeat(2, 1fr); }
+    .backtest-results { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 1024px) {
+    .sidebar { position: fixed; left: -100%; z-index: 500; transition: left var(--transition-base); }
+    .sidebar.mobile-open { left: 0; }
+    .mobile-menu-btn { display: flex; }
+    .overview-charts { grid-template-columns: 1fr; }
+    .overview-bottom { grid-template-columns: 1fr; }
+    .analysis-hero { flex-direction: column; }
+    .analysis-grid { grid-template-columns: 1fr; }
+    .backtest-config { grid-template-columns: 1fr; }
+    .settings-grid { grid-template-columns: 1fr; }
+    .market-ticker { display: none; }
+    .signal-cards { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+    .overview-grid { grid-template-columns: 1fr; }
+    .topbar-center { display: none; }
+    .page-container { padding: 12px; }
+    .signal-levels { grid-template-columns: 1fr; }
+    .search-kbd { display: none; }
+}
+@media (max-width: 480px) {
+    .page-container { padding: 8px; }
+    .card { padding: 14px; }
+}
