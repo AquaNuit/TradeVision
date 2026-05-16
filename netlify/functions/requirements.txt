@@ -1,3 +1,2 @@
-# No external dependencies required!
-# All logic has been rewritten to use pure Python 3 standard library
-# This guarantees 100% successful deployments on Netlify.
+# Trigger python buildpack
+requests>=2.28.0
