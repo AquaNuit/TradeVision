@@ -1,19 +1,7 @@
-# TradeVision Pro — Netlify Configuration
-# Deploy: connect this repo to Netlify, it auto-detects everything.
-
 [build]
-  command = "echo 'Building...'"
+  command = "echo 'Build successful'"
   publish = "frontend"
-  functions = "netlify/functions"
 
-[build.environment]
-  # Removed PYTHON_VERSION to let Netlify use its default supported version for Lambda (usually 3.8/3.9)
-# Netlify Functions configuration
-[functions]
-  # Include shared.py as a support module (not a function itself)
-  included_files = ["netlify/functions/shared.py"]
-
-# Redirect all /api/* calls to the serverless functions
 [[redirects]]
   from = "/api/auth/login"
   to = "/.netlify/functions/auth_login"
@@ -89,7 +77,6 @@
   to = "/.netlify/functions/config"
   status = 200
 
-# SPA fallback — all other routes serve index.html
 [[redirects]]
   from = "/*"
   to = "/index.html"
