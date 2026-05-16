@@ -7,6 +7,56 @@ const Auth = {
     TOKEN_KEY: 'tv_auth_token',
     USER_KEY: 'tv_auth_user',
 
+    /** True when using the local FastAPI backend (dev) */
+    _isLocalBackend() {
+        const h = window.location.hostname;
+        return h === 'localhost' || h === '127.0.0.1';
+    },
+
+    _b64url(bytes) {
+        const u8 = bytes instanceof Uint8Array ? bytes : new TextEncoder().encode(bytes);
+        let bin = '';
+        for (let i = 0; i < u8.length; i++) bin += String.fromCharCode(u8[i]);
+        return btoa(bin).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    },
+
+    /** Mint JWT in the browser (matches serverless / FastAPI token format) */
+    async _createAccessToken(username) {
+        const now = Math.floor(Date.now() / 1000);
+        const exp = now + (CONFIG.AUTH.TOKEN_EXPIRE_SECONDS || 86400);
+        const header = this._b64url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+        const payload = this._b64url(JSON.stringify({ sub: username, role: 'admin', exp, iat: now }));
+        const msg = `${header}.${payload}`;
+        const key = await crypto.subtle.importKey(
+            'raw',
+            new TextEncoder().encode(CONFIG.AUTH.SECRET_KEY),
+            { name: 'HMAC', hash: 'SHA-256' },
+            false,
+            ['sign']
+        );
+        const sig = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(msg));
+        return `${msg}.${this._b64url(new Uint8Array(sig))}`;
+    },
+
+    async _loginLocal(username, password) {
+        if (username !== CONFIG.AUTH.ADMIN_USERNAME || password !== CONFIG.AUTH.ADMIN_PASSWORD) {
+            throw new Error('Incorrect username or password');
+        }
+        const token = await this._createAccessToken(username);
+        const user = {
+            username: CONFIG.AUTH.ADMIN_USERNAME,
+            email: CONFIG.AUTH.ADMIN_EMAIL,
+            full_name: 'Admin',
+            role: 'admin',
+        };
+        this._save(token, user);
+        this.updateUI();
+        this.hideLoginModal();
+        Utils.toast('Welcome Back!', `Logged in as ${user.username}`, 'success');
+        Router.navigate('overview');
+        return { access_token: token, user };
+    },
+
     /** Resolve API URLs (pretty /api path + direct function fallback on Netlify) */
     apiUrls(path) {
         const base = CONFIG.API.BACKEND_URL.replace(/\/$/, '');
@@ -85,6 +135,11 @@ const Auth = {
     /** Login with username & password */
     async login(username, password) {
         try {
+            // Netlify static hosting: mint JWT locally (Python functions often unavailable)
+            if (!this._isLocalBackend()) {
+                return await this._loginLocal(username, password);
+            }
+
             const formData = new URLSearchParams();
             formData.append('username', username);
             formData.append('password', password);
@@ -113,8 +168,29 @@ const Auth = {
         }
     },
 
+    /** Refresh JWT (settings page) */
+    async refreshToken() {
+        const user = this.getUser();
+        if (!user) throw new Error('Not logged in');
+
+        if (!this._isLocalBackend()) {
+            const token = await this._createAccessToken(user.username);
+            this._save(token, user);
+            return { access_token: token, user };
+        }
+
+        const res = await this.authFetch(`${CONFIG.API.BACKEND_URL}/auth/refresh`, { method: 'POST' });
+        if (!res.ok) throw new Error('Token refresh failed');
+        const data = await res.json();
+        this._save(data.access_token, data.user);
+        return data;
+    },
+
     /** Register new user */
     async register(username, email, password, fullName) {
+        if (!this._isLocalBackend()) {
+            throw new Error('Registration is disabled on cloud. Use admin / tradevision2026.');
+        }
         try {
             const { res } = await this._postWithFallback('auth/register', {
                 method: 'POST',

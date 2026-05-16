@@ -10,6 +10,7 @@
   PYTHON_VERSION = "3.9"
 
 [functions]
+  node_bundler = "esbuild"
   # shared.py is a helper module, not a serverless endpoint
   included_files = ["netlify/functions/shared.py"]
 

@@ -178,14 +178,10 @@ const SettingsPage = {
         // Refresh token button
         document.getElementById('refresh-token-btn')?.addEventListener('click', async () => {
             try {
-                const res = await Auth.authFetch(`${CONFIG.API.BACKEND_URL}/auth/refresh`, { method: 'POST' });
-                if (res.ok) {
-                    const data = await res.json();
-                    Auth._save(data.access_token, data.user);
-                    Utils.toast('Token Refreshed', 'New token generated successfully', 'success');
-                    Router.navigate('settings');
-                }
-            } catch(e) {
+                await Auth.refreshToken();
+                Utils.toast('Token Refreshed', 'New token generated successfully', 'success');
+                Router.navigate('settings');
+            } catch (e) {
                 Utils.toast('Error', e.message, 'error');
             }
         });

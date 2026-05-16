@@ -5,6 +5,15 @@ const CONFIG = {
     APP_NAME: 'TradeVision Pro',
     VERSION: '1.0.0',
 
+    // Local auth (Netlify static deploy — JWT minted in browser, no server required)
+    AUTH: {
+        ADMIN_USERNAME: 'admin',
+        ADMIN_PASSWORD: 'tradevision2026',
+        ADMIN_EMAIL: 'admin@tradevision.local',
+        SECRET_KEY: '67a100130a4345992e8584aa28fcce3e7e747bae4ca1d1cf7a1cc3aabfee56fa',
+        TOKEN_EXPIRE_SECONDS: 86400,
+    },
+
     // API Keys — replace with your own for production
     API: {
         YAHOO_FINANCE: 'https://query1.finance.yahoo.com/v8/finance',
