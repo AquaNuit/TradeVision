@@ -7,6 +7,50 @@ const Auth = {
     TOKEN_KEY: 'tv_auth_token',
     USER_KEY: 'tv_auth_user',
 
+    /** Resolve API URLs (pretty /api path + direct function fallback on Netlify) */
+    apiUrls(path) {
+        const base = CONFIG.API.BACKEND_URL.replace(/\/$/, '');
+        const clean = path.replace(/^\//, '');
+        const urls = [`${base}/${clean}`];
+        if (!base.startsWith('http')) {
+            const fn = clean.replace(/\//g, '_').replace(/-/g, '_');
+            urls.push(`/.netlify/functions/${fn}`);
+        }
+        return urls;
+    },
+
+    async _parseJsonResponse(res) {
+        const ct = (res.headers.get('content-type') || '').toLowerCase();
+        if (!ct.includes('application/json')) {
+            const text = await res.text();
+            if (text.trimStart().startsWith('<')) {
+                throw new Error('API returned HTML instead of JSON. Redeploy the site with the latest Netlify config.');
+            }
+            throw new Error(text.slice(0, 120) || `Unexpected response (${res.status})`);
+        }
+        return res.json();
+    },
+
+    async _postWithFallback(path, options) {
+        const urls = this.apiUrls(path);
+        let lastError;
+        for (let i = 0; i < urls.length; i++) {
+            const url = urls[i];
+            try {
+                const res = await fetch(url, options);
+                const ct = (res.headers.get('content-type') || '').toLowerCase();
+                if (!ct.includes('application/json')) {
+                    const peek = await res.clone().text();
+                    if (peek.trimStart().startsWith('<') && i < urls.length - 1) continue;
+                }
+                return { res, url };
+            } catch (e) {
+                lastError = e;
+            }
+        }
+        throw lastError || new Error('Could not reach the API');
+    },
+
     /** Get stored token */
     getToken() {
         return localStorage.getItem(this.TOKEN_KEY);
@@ -45,18 +89,18 @@ const Auth = {
             formData.append('username', username);
             formData.append('password', password);
 
-            const res = await fetch(`${CONFIG.API.BACKEND_URL}/auth/login`, {
+            const { res } = await this._postWithFallback('auth/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                 body: formData,
             });
 
             if (!res.ok) {
-                const err = await res.json();
+                const err = await this._parseJsonResponse(res);
                 throw new Error(err.detail || 'Login failed');
             }
 
-            const data = await res.json();
+            const data = await this._parseJsonResponse(res);
             this._save(data.access_token, data.user);
             this.updateUI();
             this.hideLoginModal();
@@ -72,18 +116,18 @@ const Auth = {
     /** Register new user */
     async register(username, email, password, fullName) {
         try {
-            const res = await fetch(`${CONFIG.API.BACKEND_URL}/auth/register`, {
+            const { res } = await this._postWithFallback('auth/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, email, password, full_name: fullName }),
             });
 
             if (!res.ok) {
-                const err = await res.json();
+                const err = await this._parseJsonResponse(res);
                 throw new Error(err.detail || 'Registration failed');
             }
 
-            const data = await res.json();
+            const data = await this._parseJsonResponse(res);
             Utils.toast('Account Created!', `Welcome ${username}! You can now login.`, 'success');
             return data;
         } catch (e) {

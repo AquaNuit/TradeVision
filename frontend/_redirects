@@ -1,0 +1,19 @@
+# API → Netlify Functions (200! = force rewrite, required so SPA fallback does not win)
+/api/auth/login       /.netlify/functions/auth_login       200!
+/api/auth/register    /.netlify/functions/auth_register    200!
+/api/auth/me          /.netlify/functions/auth_me          200!
+/api/auth/token-info  /.netlify/functions/auth_token_info  200!
+/api/auth/refresh     /.netlify/functions/auth_refresh     200!
+/api/market/overview  /.netlify/functions/market_overview   200!
+/api/market/movers    /.netlify/functions/market_movers     200!
+/api/market/stock/*   /.netlify/functions/market_stock?symbol=:splat  200!
+/api/market/candles/* /.netlify/functions/market_candles?symbol=:splat 200!
+/api/scanner/scan     /.netlify/functions/scanner_scan     200!
+/api/signals/         /.netlify/functions/signals_list     200!
+/api/signals/*        /.netlify/functions/signals_detail?symbol=:splat 200!
+/api/backtest/run     /.netlify/functions/backtest_run     200!
+/api/health           /.netlify/functions/health           200!
+/api/config           /.netlify/functions/config           200!
+
+# SPA fallback (must be last)
+/*  /index.html  200

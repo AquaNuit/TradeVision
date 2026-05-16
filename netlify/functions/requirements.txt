@@ -1,2 +1,2 @@
-# Trigger python buildpack
-requests>=2.28.0
+# Netlify Python functions — stdlib only (urllib, json, hmac).
+# Empty on purpose; keeps the Python buildpack happy without extra deps.
